@@ -1,6 +1,9 @@
 // Import the hook from react-redux team - used for getting date from the store
 // Import useDispatch hook for dispatching actions
 import { useSelector, useDispatch } from "react-redux";
+// Import the actions from redux toolkit
+import { counterActions } from "../store";
+
 import classes from "./Counter.module.css";
 
 const Counter = () => {
@@ -18,19 +21,19 @@ const Counter = () => {
 
   // Handlers
   const incrementHandler = () => {
-    dispatch({ type: "increment" });
+    dispatch(counterActions.increment());
   };
 
   const increaseHandler = () => {
-    dispatch({ type: "increase", amount: 5 });
+    dispatch(counterActions.increase(10)); // {type: SOME_ID, payload: 10}
   };
 
   const decrementHandler = () => {
-    dispatch({ type: "decrement" });
+    dispatch(counterActions.decrement());
   };
 
   const toggleCounterHandler = () => {
-    dispatch({ type: "toggle" });
+    dispatch(counterActions.toggleCounter());
   };
 
   return (

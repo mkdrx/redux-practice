@@ -1,30 +1,37 @@
 // Import redux
-import { createStore } from "redux";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = { counter: 0, showCounter: true };
 
-// Create the reducer function
-const counterReducer = (state = initialState, action) => {
-  if (action.type === "increment") {
-    return { counter: state.counter + 1, showCounter: state.showCounter };
-  }
-  if (action.type === "increase") {
-    return {
-      counter: state.counter + action.amount,
-      showCounter: state.showCounter,
-    };
-  }
-  if (action.type === "decrement") {
-    return { counter: state.counter - 1, showCounter: state.showCounter };
-  }
-  if (action.type === "toggle") {
-    return { showCounter: !state.showCounter, counter: state.counter };
-  }
-  return state;
-};
+// Prepare a slice of our global state
+// receives an object with a name of your choice, the initial state and the reducers: methods with the current state and (not necessary) action
+// With increase() we need data related to the action
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter = state.counter + action.payload;
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    },
+  },
+});
 
-// Create the store
-const store = createStore(counterReducer);
+// Create the store - pass an configuration object expected by configureStore()
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
+
+// Actions creators will create action objects that have already a type property with an unique id per action
+export const counterActions = counterSlice.actions;
 
 // Export store - needs to be provided (typically highest level we can go / to the top: index.js)
 export default store;
